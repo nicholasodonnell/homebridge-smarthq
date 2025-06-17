@@ -1,0 +1,14 @@
+services:
+
+  app:
+    build:
+      context: .
+      target: development
+    container_name: homebridge-smarthq
+    command: npm run watch
+    image: homebridge-plugins/homebridge-smarthq:latest
+    ports:
+      - "8581:8581"
+    volumes:
+      - ./:/app
+      - /app/node_modules
