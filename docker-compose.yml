@@ -6,9 +6,22 @@ services:
       target: development
     container_name: homebridge-smarthq
     command: npm run watch
-    image: homebridge-plugins/homebridge-smarthq:latest
-    ports:
-      - "8581:8581"
+    image: homebridge-plugins/homebridge-smarthq:development
     volumes:
       - ./:/app
       - /app/node_modules
+
+  homebridge:
+    image: homebridge/homebridge:latest
+    container_name: homebridge
+    depends_on:
+      - app
+    ports:
+      - 8581:8581
+    environment:
+      - ENABLE_AVAHI=0
+      - HOMEBRIDGE_CONFIG_UI_PORT=8581
+      - HOMEBRIDGE_PORT=51826
+    volumes:
+      - ./homebridge:/homebridge
+      - "./:/homebridge/node_modules/@homebridge-plugins/homebridge-smarthq"
